@@ -5,103 +5,67 @@ import Day5.Result;
 public class RomanNum {
 
 	public static void main(String[] args) {
-		String[] test1 = { "I", "I", "I" };
-		String[] test2 = { "I", "V" };
-		String[] test3 = { "I", "X" };
-		String[] test4 = { "L", "V", "I", "I", "I" };
-		String[] test5 = { "M", "C", "M", "X", "C", "I", "V" };
-		
-		displayResult(test1);
-		displayResult(test2);
-		displayResult(test3);
-		displayResult(test4);
-		displayResult(test5);
+		String test1 = "III";
+		String test2 = "IV";
+		String test3 = "IX";
+		String test4 = "LVIII";
+		String test5 = "MCMXCIV";
+
+		System.out.println(roman2Int(test1));
+		System.out.println(roman2Int(test2));
+		System.out.println(roman2Int(test3));
+		System.out.println(roman2Int(test4));
+		System.out.println(roman2Int(test5));
 	}
 
-	public static int roman2Int(String[] num) {
-		int result = 0; // x1 step
-		for (int i = 0; i < num.length; i++) { // x n steps with n is the number of roman characters
-			if (num[i].equals("I")) {
-				if (i + 1 < num.length && num[i + 1].equals("V")) { // x3 steps
-					result += 4;
-					i++;
-					continue;
-				}
+	public static int roman2Int(String num) {
+		int result = 0;
+		int currentVal = 0;
+		int nextVal = 0;
 
-				if (i + 1 < num.length && num[i + 1].equals("X")) { // x3 steps
-					result += 9;
-					i++;
-					continue;
-				}
-				result += 1; // x1 step
+		for (int i = 0; i < num.length(); i++) {
+			currentVal = romanConverter(num.charAt(i));
+
+			if (currentVal == -1) {
+				return -1;
 			}
 
-			if (num[i].equals("V")) { // x2 steps
-				result += 5;
-			}
+			if (i + 1 < num.length()) {
+				nextVal = romanConverter(num.charAt(i + 1));
 
-			if (num[i].equals("X")) { // x3 steps
-				if (i + 1 < num.length && num[i + 1].equals("L")) {
-					result += 40;
-					i++;
-					continue;
+				if (currentVal < nextVal) {
+					result -= currentVal;
+				} else {
+					result += currentVal;
 				}
-
-				if (i + 1 < num.length && num[i + 1].equals("C")) { // x3 steps
-					result += 90;
-					i++;
-					continue;
-				}
-				
-				result += 10; // x1 step
-			}
-
-			if (num[i].equals("L")) { // x2 steps
-				result += 50;
-			}
-
-			if (num[i].equals("C")) {
-				if (i + 1 < num.length && num[i + 1].equals("D")) {// x3 steps
-					result += 400;
-					i++;
-					continue;
-				}
-
-				if (i + 1 < num.length && num[i + 1].equals("M")) { // x3 steps
-					result += 900;
-					i++;
-					continue;
-				}
-				
-				result += 100; // x1 step
-			}
-
-			if (num[i].equals("D")) { // x2 steps
-				result += 500;
-			}
-
-			if (num[i].equals("M")) { // x2 steps
-				result += 1000;
+			} else {
+				result += currentVal;
 			}
 		}
-
-		return result; // x1 step
+		return result;
 	}
-	
-	// ==> time complexity: best case: n + 2 --> O(N)       worst case: n + 15 ---> O(N)
 
-	public static void displayRoman(String[] arr) {
-		for (int i = 0; i < arr.length; i++) {
-			System.out.print(arr[i]);
+	public static int romanConverter(char input) {
+		switch (input) {
+		case 'I':
+			return 1;
+		case 'V':
+			return 5;
+		case 'X':
+			return 10;
+		case 'L':
+			return 50;
+		case 'C':
+			return 100;
+		case 'D':
+			return 500;
+		case 'M':
+			return 1000;
+		default:
+			return -1;
 		}
 	}
-	
-	public static void displayResult(String[] arr) {
-		System.out.print("Number ");
-		displayRoman(arr);
-		System.out.println(" is: " + roman2Int(arr));
 
-	}
-	
+	// ==> time complexity: best case: n + 2 --> O(N) worst case: n + 15 ---> O(N)
 
 }

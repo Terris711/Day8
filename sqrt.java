@@ -4,7 +4,7 @@ import java.lang.Math;
 
 public class sqrt {
 	public static void main(String[] args) {
-		double number = 16;
+		double number = 10.0;
 		double squareRoot = squareOld(number);
 		double squareRoot1 = squareNew(number, 0, number);
 
@@ -26,27 +26,21 @@ public class sqrt {
 		return squareroot;
 	}
 	// ===> Time complexity: O(N)
-	
-	
-	
-	
+
 	// Find square root of a number using binary search
 	// square root of a number is in range [1,N]
 	public static double squareNew(double number, double low, double high) {
-		while (low <= high) {
-			double mid = (low + high)/2;
-			if (mid*mid == number) {
-				return mid;
-			}
-			if (mid*mid < number) {
-				return squareNew(number, mid + 1, high);
-			} else {
-				return squareNew(number, low, mid - 1);
-			}
+		double mid = (low - high) /2;
+		double var = mid*mid - number;
+		if (Math.abs(var) <= 0.01*0.01) {
+			return mid;
+		} else if (var < 0) {
+			return squareNew(number, mid, high);
+		} else {
+			return squareNew(number, low, mid);
 		}
-		return low;
+		
 	}
-	
-	
+
 	// ===> Time complexity: O(logN)
 }
